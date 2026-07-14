@@ -3,8 +3,9 @@
 #include <unistd.h>
 #include <stdbool.h>
 
-typedef struct Scene Scene;
-typedef struct Line Line;
+#ifdef _WIN32
+#include <windows.h>
+#endif
 
 typedef enum
 {
@@ -26,7 +27,6 @@ typedef enum
     SCENE_UNIVERSITY_COMP_CLASS_B,
     SCENE_UNIVERSITY_SERVER_ROOM,
     SCENE_UNIVERSITY_ROBOTICS_BAY,
-    SCENE_UNIVERSITY_AI_RESEARCH_CENTER,
 
     SCENE_UNIVERSITY_LIBRARY_MAIN,
     SCENE_UNIVERSITY_LIBRARY_ARCHIVE,
@@ -43,6 +43,7 @@ typedef enum
     SCENE_HOME_KITCHEN,
     SCENE_HOME_BATHROOM,
     SCENE_HOME_BEDROOM,
+    SCENE_HOME_BALCONY
 } SceneID;
 
 typedef enum
@@ -61,16 +62,14 @@ typedef struct
 typedef struct
 {
     const char *persona_name;
-    bool is_persona;
-    bool is_thoughts;
     const char *text;
     SceneID next_scene;
     int next_line;
 } Line;
 
 typedef struct
-{
-    const char *description;
+{   
+    const char *title;
     Line line[50];
     int line_count;
     Choice choice[10];
@@ -94,8 +93,80 @@ void type_text(const char *text, unsigned int delay_us)
     printf("\n");
 }
 
+void wait_for_enter()
+{
+    while (getchar() != '\n');
+}
+
+
 int main()
 {
-    clear_screen();
-    type_text("welcome to simple interactive novel", 4000);
+
+    #ifdef _WIN32
+    SetConsoleCP(65001);
+    SetConsoleOutputCP(65001);
+    #endif
+
+    Scene sor[] = {
+    [SCENE_HOME_BALCONY] = {
+        .title = "Balcony",
+        .line = {
+            {.persona_name = "???",
+             .text = "kak zhe horosho sehodnia utrom!",
+             .next_line = 1},
+            {.persona_name = "???",
+             .text = "kofejka by...",
+             .next_line = 2},
+            {.persona_name = "Semen",
+             .text = "pojdu ka ja.",
+             .next_line = -1}},
+        .line_count = 3,
+        .choice = {
+
+        },
+        .choice_count = 0}};
+    
+    int current_scene = SCENE_HOME_BALCONY;
+    int current_line = 0;
+
+    fflush(stdin);
+
+    while (current_scene != -1){
+        Scene active_scene = sor[current_scene];
+        Line active_line = active_scene.line[current_line];
+
+        clear_screen();
+
+        printf("\033[1;36m[ LOCATION: %s ]\033[0m\n", active_scene.title);
+        printf("==================================================\n\n");
+
+        if (active_line.persona_name != NULL && active_line.persona_name[0] != '\0')
+        {
+            printf("\033[1;32m%s:\033[0m\n", active_line.persona_name);
+        }
+        else
+        {
+            printf("\033[1;30m[Author]:\033[0m\n");
+        }
+
+        printf("  ");
+        type_text(active_line.text, 30000);
+        printf("\n\n");
+
+        printf("\033[90m[ Нажмите ENTER для продолжения... ]\033[0m");
+        fflush(stdout);
+
+        wait_for_enter();
+   
+        if (active_line.next_line == -1)
+        {
+            clear_screen();
+            printf("Диалог завершен. Переход к выбору сцены или конец игры...\n");
+            break; 
+        }
+        else
+        {
+            current_line = active_line.next_line;
+        }
+    }
 }
