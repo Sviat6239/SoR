@@ -12,7 +12,7 @@ typedef struct
 
 typedef struct
 {
-    const char persona_name;
+    const char *persona_name;
     bool is_persona;
     const char *text;
     int next_scene;
@@ -22,8 +22,9 @@ typedef struct
 typedef struct
 {
     const char *description;
-    int i;
-    Choice choice[i];
+    Line line[50];
+    int line_count;
+    Choice choice[10];
     int choice_count;
 } Scene;
 
@@ -46,5 +47,6 @@ void type_text(const char *text, unsigned int delay_us)
 
 int main()
 {
-    printf("Hello world");
+    clear_screen();
+    type_text("welcome to simple interactive novel", 4000);
 }
