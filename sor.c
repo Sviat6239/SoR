@@ -109,22 +109,39 @@ int main()
 
     Scene sor[] = {
     [SCENE_HOME_BALCONY] = {
-        .title = "Balcony",
+        .title = "Балкон",
         .line = {
             {.persona_name = "???",
-             .text = "kak zhe horosho sehodnia utrom!",
+             .text = "Я вышел на балкон. Была приятно прохладная утренняя погода очередного дня.",
              .next_line = 1},
             {.persona_name = "???",
-             .text = "kofejka by...",
+             .text = "Вспоминались деньки детсва и юности. Как и тогда тоже мог выйти на улицу и достаточно долго стоять смотреть в даль, в никуда.",
              .next_line = 2},
-            {.persona_name = "Semen",
-             .text = "pojdu ka ja.",
-             .next_line = -1}},
-        .line_count = 3,
-        .choice = {
-
+            {.persona_name = "???",
+             .text = "~На часах без пяти шесть. Правильно будет выйти чуть раньше, на всякий случай.~",
+             .next_line = 3},
+            {.persona_name = "???",
+             .text = "Вышел без промедления, аккуратно притянув дверь балкона.",
+             .next_scene = SCENE_HOME_BEDROOM,
+             .next_line = -1}
         },
-        .choice_count = 0}};
+        .line_count = 4,
+        .choice = {
+        },
+        .choice_count = 0},
+    [SCENE_HOME_BEDROOM] = {
+        .title = "Спальная",
+        .line = {
+            {.persona_name = "???",
+            .text = "У меня в комнате было не много веще. Как говорится \"пускай вещь выполняет одну задачу, но идеально.\" Также и в моей скромной обитель.",
+            .next_line = -1}
+        },
+        .line_count = 1,
+        .choice = {
+        },
+        .choice_count = 0 
+    }
+    };
     
     int current_scene = SCENE_HOME_BALCONY;
     int current_line = 0;
@@ -137,7 +154,7 @@ int main()
 
         clear_screen();
 
-        printf("\033[1;36m[ LOCATION: %s ]\033[0m\n", active_scene.title);
+        printf("\033[1;36m[ ЛОКАЦИЯ: %s ]\033[0m\n", active_scene.title);
         printf("==================================================\n\n");
 
         if (active_line.persona_name != NULL && active_line.persona_name[0] != '\0')
@@ -146,11 +163,11 @@ int main()
         }
         else
         {
-            printf("\033[1;30m[Author]:\033[0m\n");
+            printf("\033[1;30m[Автор]:\033[0m\n");
         }
 
         printf("  ");
-        type_text(active_line.text, 30000);
+        type_text(active_line.text, 10000);
         printf("\n\n");
 
         printf("\033[90m[ Нажмите ENTER для продолжения... ]\033[0m");
@@ -160,9 +177,17 @@ int main()
    
         if (active_line.next_line == -1)
         {
-            clear_screen();
-            printf("Диалог завершен. Переход к выбору сцены или конец игры...\n");
-            break; 
+            current_scene = active_line.next_scene; 
+
+            current_line = 0; 
+
+            if (current_scene == -1) 
+            {
+                clear_screen();
+                printf("\033[1;33m[ ИГРА ЗАВЕРШЕНА ]\033[0m\n");
+                printf("Вы дошли до конца доступного сюжета.\n");
+                break; 
+            }
         }
         else
         {
