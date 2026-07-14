@@ -45,6 +45,12 @@ typedef enum
     SCENE_HOME_BEDROOM,
 } SceneID;
 
+typedef enum
+{
+    ENDING_GOOD,
+    ENDING_BAD,
+} EndingsID;
+
 typedef struct
 {
     const char *text;
