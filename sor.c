@@ -3,10 +3,18 @@
 #include <unistd.h>
 #include <stdbool.h>
 
+typedef struct Scene Scene;
+typedef struct Line Line;
+
+typedef enum
+{
+    SCENE_UNIVERSITY
+} SceneID;
+
 typedef struct
 {
     const char *text;
-    int next_scene;
+    SceneID next_scene;
     int next_line;
 } Choice;
 
@@ -14,8 +22,9 @@ typedef struct
 {
     const char *persona_name;
     bool is_persona;
+    bool is_thoughts;
     const char *text;
-    int next_scene;
+    SceneID next_scene;
     int next_line;
 } Line;
 
