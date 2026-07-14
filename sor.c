@@ -43,7 +43,9 @@ typedef enum
     SCENE_HOME_KITCHEN,
     SCENE_HOME_BATHROOM,
     SCENE_HOME_BEDROOM,
-    SCENE_HOME_BALCONY
+    SCENE_HOME_BALCONY,
+
+    SCENE_HOME_APPARTMENT_ENTRANCE
 } SceneID;
 
 typedef enum
@@ -155,10 +157,24 @@ int main()
              .next_line = 7},
             {.persona_name = "???",
              .text = "Привычным, доведенным до автоматизма движением я закинул лямку сумки на плечо и направился к выходу.",
-             //.next_scene = SCENE_HOME_CORRIDOR,
+             .next_scene = SCENE_HOME_CORRIDOR,
              .next_line = -1},
         },
         .line_count = 8,
+        .choice = {},
+        .choice_count = 0 
+    },
+    [SCENE_HOME_CORRIDOR] = {
+        .line ={
+            {.persona_name = "???",
+            .text = "Обулся моментально. Практически не задерживаясь в корридоре.",
+            .next_line = 1},
+            {.persona_name = "???",
+            .text = "Машинально я проверил все ли выключил и вышел из квартиры.",
+            .next_scene = SCENE_HOME_APPARTMENT_ENTRANCE,
+            .next_line = -1},
+        },
+        .line_count = 2,
         .choice = {},
         .choice_count = 0 
     }
