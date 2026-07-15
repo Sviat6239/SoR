@@ -189,6 +189,25 @@ int main()
         .line_count = 2,
         .choice = {},
         .choice_count = 0 
+    },
+    [SCENE_HOME_APPARTMENT_ENTRANCE] = {
+            .line ={
+            {.persona_name = " ",
+            .text = "Подъезд дома в котором я жил имел характерный запах.",
+            .next_line = 1},
+            {.persona_name = " ",
+            .text = "Не отвратительный, но приятным тоже назвать нельзя. Никак привыкнуть не могу к нему.",
+            .next_line = 2},
+            {.persona_name = "???",
+            .text = "~Почему я переехал именно сюда?~",
+            .next_line = 3},
+            {.persona_name = " ",
+            .text = "Снова мимолетная мысль меня встретил.",
+            .next_line = -1},
+        },
+        .line_count = 4,
+        .choice = {},
+        .choice_count = 0 
     }
     };
     
