@@ -178,6 +178,7 @@ int main()
         .choice_count = 0 
     },
     [SCENE_HOME_CORRIDOR] = {
+        .title = "Корридор",
         .line ={
             {.persona_name = " ",
             .text = "Обулся моментально. Практически не задерживаясь в корридоре.",
@@ -192,7 +193,8 @@ int main()
         .choice_count = 0 
     },
     [SCENE_HOME_APPARTMENT_ENTRANCE] = {
-            .line ={
+        .title = "Подъезд",
+        .line ={
             {.persona_name = " ",
             .text = "Подъезд дома в котором я жил имел характерный запах.",
             .next_line = 1},
@@ -212,7 +214,8 @@ int main()
         .choice_count = 0 
     },
     [SCENE_OUTSIDE_NERBY_HOME] = {
-            .line ={
+        .title = "Улица",
+        .line ={
             {.persona_name = " ",
             .text = "На улице было все также прохладно.",
             .next_line = 1},
