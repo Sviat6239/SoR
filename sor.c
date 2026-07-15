@@ -44,8 +44,9 @@ typedef enum
     SCENE_HOME_BATHROOM,
     SCENE_HOME_BEDROOM,
     SCENE_HOME_BALCONY,
-
-    SCENE_HOME_APPARTMENT_ENTRANCE
+    SCENE_HOME_APPARTMENT_ENTRANCE,
+    
+    SCENE_OUTSIDE_NERBY_HOME
 } SceneID;
 
 typedef enum
@@ -203,6 +204,7 @@ int main()
             .next_line = 3},
             {.persona_name = " ",
             .text = "Снова мимолетная мысль меня встретил.",
+            .next_scene = SCENE_OUTSIDE_NERBY_HOME,
             .next_line = -1},
         },
         .line_count = 4,
