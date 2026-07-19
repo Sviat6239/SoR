@@ -50,7 +50,9 @@ typedef enum
     SCENE_HOME_BALCONY,
     SCENE_HOME_APPARTMENT_ENTRANCE,
     
-    SCENE_OUTSIDE_NERBY_HOME
+    SCENE_OUTSIDE_NERBY_HOME,
+
+    SCENE_GAME_OVER
 } SceneID;
 
 typedef enum
@@ -58,6 +60,12 @@ typedef enum
     ENDING_GOOD,
     ENDING_BAD,
 } EndingsID;
+
+typedef enum {
+    NEXT_LINE,
+    NEXT_SCENE,
+    SHOW_CHOICES
+} TransitionType;
 
 typedef struct
 {
@@ -70,6 +78,7 @@ typedef struct
 {
     const char *persona_name;
     const char *text;
+    TransitionType transition;
     SceneID next_scene;
     int next_line;
 } Line;
@@ -103,6 +112,25 @@ void type_text(const char *text, unsigned int delay_us)
 void wait_for_enter()
 {
     while (getchar() != '\n');
+}
+
+int get_choice_input(int max_choices)
+{
+    int selection = -1;
+    char input[64];
+    
+    while (1)
+    {
+        printf("\033[1;32mВыберите вариант (1-%d): \033[0m", max_choices);
+        if (fgets(input, sizeof(input), stdin))
+        {
+            if (sscanf(input, "%d", &selection) == 1 && selection >= 1 && selection <= max_choices)
+            {
+                return selection - 1;
+            }
+        }
+        printf("\033[1;31mНеверный ввод. Попробуйте снова.\033[0m\n");
+    }
 }
 
 
@@ -561,7 +589,8 @@ int main()
 
     fflush(stdin);
 
-    while (current_scene != -1){
+    while (current_scene != SCENE_GAME_OVER)
+    {
         Scene active_scene = sor[current_scene];
         Line active_line = active_scene.line[current_line];
 
@@ -583,28 +612,41 @@ int main()
         type_text(active_line.text, 10000);
         printf("\n\n");
 
-        printf("\033[90m[ Нажмите ENTER для продолжения... ]\033[0m");
-        fflush(stdout);
-
-        wait_for_enter();
-   
-        if (active_line.next_line == -1)
+        if (active_line.transition == SHOW_CHOICES && active_scene.choice_count > 0)
         {
-            current_scene = active_line.next_scene; 
-
-            current_line = 0; 
-
-            if (current_scene == -1) 
+            printf("--------------------------------------------------\n");
+            for (int i = 0; i < active_scene.choice_count; i++)
             {
-                clear_screen();
-                printf("\033[1;33m[ ИГРА ЗАВЕРШЕНА ]\033[0m\n");
-                printf("Вы дошли до конца доступного сюжета.\n");
-                break; 
+                printf("  \033[1;33m%d.\033[0m %s\n", i + 1, active_scene.choice[i].text);
             }
+            printf("--------------------------------------------------\n\n");
+
+            int selected_idx = get_choice_input(active_scene.choice_count);
+            
+            current_scene = active_scene.choice[selected_idx].next_scene;
+            current_line = active_scene.choice[selected_idx].next_line;
         }
         else
         {
-            current_line = active_line.next_line;
+            printf("\033[90m[ Нажмите ENTER для продолжения... ]\033[0m");
+            fflush(stdout);
+            wait_for_enter();
+
+            if (active_line.transition == NEXT_SCENE)
+            {
+                current_scene = active_line.next_scene;
+                current_line = active_line.next_line;
+            }
+            else
+            {
+                current_line = active_line.next_line;
+            }
         }
     }
+
+    clear_screen();
+    printf("\033[1;33m[ ИГРА ЗАВЕРШЕНА ]\033[0m\n");
+    printf("Вы дошли до конца доступного сюжета.\n");
+    
+    return 0;
 }
