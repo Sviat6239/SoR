@@ -178,7 +178,7 @@ int main()
             .text = "Я вернулся в комнату, бесшумно притянув за собой балконную дверь.",
             .transition = NEXT_SCENE,
             .next_scene = SCENE_HOME_BEDROOM,
-            .next_line = -1}
+            .next_line = 0}
         },
         .line_count = 8,
         .choice = {},
@@ -219,7 +219,7 @@ int main()
              .text = "Привычным, доведенным до автоматизма движением я закинул лямку сумки на плечо и направился к выходу.",
              .transition = NEXT_SCENE,
              .next_scene = SCENE_HOME_CORRIDOR,
-             .next_line = -1},
+             .next_line = 0},
         },
         .line_count = 8,
         .choice = {},
@@ -236,7 +236,7 @@ int main()
             .text = "Машинально я проверил все ли выключил и вышел из квартиры.",
             .transition = NEXT_SCENE,
             .next_scene = SCENE_HOME_APPARTMENT_ENTRANCE,
-            .next_line = -1},
+            .next_line = 0},
         },
         .line_count = 2,
         .choice = {},
@@ -261,7 +261,7 @@ int main()
             .text = "Снова меня встретила мимолетная мысль.",
             .transition = NEXT_SCENE,
             .next_scene = SCENE_OUTSIDE_NERBY_HOME,
-            .next_line = -1},
+            .next_line = 0},
         },
         .line_count = 4,
         .choice = {},
@@ -314,7 +314,7 @@ int main()
             .text = "Уже подходя к зданию университета я отчетливо видел Виктора чего-то ждущего.",
             .transition = NEXT_SCENE,
             .next_scene = SCENE_UNIVERSITY_GATES,
-            .next_line = -1},
+            .next_line = 0},
         },
         .line_count = 11,
         .choice = {},
@@ -499,7 +499,7 @@ int main()
             .text = "Я начал направляться к дверям университета, Виктор молча пошел за мной, как бы говоря \"я тебя понял\".",
             .transition = NEXT_SCENE,
             .next_scene = SCENE_UNIVERSITY_ENTRANCE_HALL,
-            .next_line = -1},
+            .next_line = 0},
         },
         .line_count = 44,
         .choice = {},
@@ -560,7 +560,7 @@ int main()
             .text = "Я собрал вещи и кивком головы указал Вику, что собираюсь внутрь аудитории. Вик, не медля, пошел за мной.",
             .transition = NEXT_SCENE,
             .next_scene = SCENE_UNIVERSITY_ROOM_101,
-            .next_line = -1},
+            .next_line = 0},
         },
         .line_count = 13,
         .choice = {},
@@ -687,7 +687,7 @@ int main()
             .next_line = 32},
             {.persona_name = " ",
             .text = "",
-            .next_line = -1},
+            .next_line = 0},
         },
         .line_count = 21,
         .choice = {},
@@ -720,7 +720,7 @@ int main()
         }
 
         printf("  ");
-        type_text(active_line.text, 10000);
+        type_text(active_line.text, 1000);
         printf("\n\n");
 
         if (active_line.transition == SHOW_CHOICES && active_scene.choice_count > 0)
